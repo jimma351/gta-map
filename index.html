@@ -4,7 +4,6 @@
   <title>My GTA Map</title>
   <meta charset="utf-8" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-
   <style>
     html, body {
       margin: 0;
@@ -31,7 +30,7 @@
       border-right: 1px solid #222;
     }
 
-    #sidebar h2 {
+    #sidebar h2, #sidebar h3 {
       margin-top: 0;
     }
 
@@ -45,13 +44,6 @@
       height: 100%;
     }
 
-    .popup-image {
-      width: 220px;
-      max-width: 100%;
-      border-radius: 8px;
-      margin-top: 8px;
-    }
-
     .marker-item {
       padding: 8px;
       margin-bottom: 8px;
@@ -60,14 +52,68 @@
       font-size: 14px;
       cursor: pointer;
     }
+
+    .map-form {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #111827;
+      padding: 20px;
+      border-radius: 10px;
+      display: none;
+      z-index: 1000;
+      color: white;
+      width: 300px;
+      box-sizing: border-box;
+      border: 1px solid #333;
+    }
+
+    .map-form input,
+    .map-form select,
+    .map-form textarea,
+    .map-form button {
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+    }
+
+    .map-form button {
+      cursor: pointer;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .button-row button {
+      margin-bottom: 0;
+    }
+
+    .small-note {
+      font-size: 12px;
+      color: #cbd5e1;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .status {
+      font-size: 12px;
+      color: #93c5fd;
+      margin-bottom: 12px;
+    }
   </style>
 </head>
-
 <body>
-
 <div id="app">
   <div id="sidebar">
     <h2>Filters</h2>
+
+    <div class="status" id="statusText">Connecting...</div>
 
     <label><input type="checkbox" class="filter-checkbox" value="Gang" checked> Gang</label>
     <label><input type="checkbox" class="filter-checkbox" value="Shop" checked> Shop</label>
@@ -83,12 +129,44 @@
   <div id="map"></div>
 </div>
 
+<div id="locationForm" class="map-form">
+  <h3>Add Location</h3>
+  <div class="small-note">
+    Left click map to add a marker. Right click a marker to delete it.
+  </div>
+
+  <input id="name" type="text" placeholder="Location name">
+
+  <select id="type">
+    <option>Gang</option>
+    <option>Shop</option>
+    <option>Stash</option>
+    <option>Tables</option>
+    <option>Labs</option>
+    <option>Drug Locations</option>
+  </select>
+
+  <textarea id="notes" rows="3" placeholder="Notes (optional)"></textarea>
+  <input id="imageUrl" type="text" placeholder="Image URL or file path (optional)">
+
+  <div class="button-row">
+    <button id="save">Save</button>
+    <button id="cancel" type="button">Cancel</button>
+  </div>
+</div>
+
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+  const SUPABASE_URL = 'https://natkxmsuucejncckhwkl.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5hdGt4bXN1dWNlam5jY2tod2tsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0ODI5MDQsImV4cCI6MjA5MDA1ODkwNH0.-LqvCtT0dANK2ZJTDsVITKnQfToYyMsDzf1DnKIyplo';
+
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
   const imageWidth = 6144;
   const imageHeight = 6144;
 
-  const markerData = [];
+  let markerData = [];
   let tempLatLng = null;
 
   const map = L.map('map', {
@@ -101,9 +179,37 @@
   L.imageOverlay('GTAV-HD-MAP-satellite.jpg', bounds).addTo(map);
   map.fitBounds(bounds);
 
+  const form = document.getElementById('locationForm');
+  const nameInput = document.getElementById('name');
+  const typeInput = document.getElementById('type');
+  const notesInput = document.getElementById('notes');
+  const imageInput = document.getElementById('imageUrl');
+  const statusText = document.getElementById('statusText');
+
+  function setStatus(text) {
+    statusText.textContent = text;
+  }
+
   function getEnabledTypes() {
     return Array.from(document.querySelectorAll('.filter-checkbox:checked'))
       .map(box => box.value);
+  }
+
+  function buildPopupContent(item) {
+    let html = `
+      <strong>${item.name}</strong><br>
+      Type: ${item.type}<br>
+      Notes: ${item.notes ? item.notes : 'None'}<br>
+      X: ${item.latlng.lng.toFixed(2)}<br>
+      Y: ${item.latlng.lat.toFixed(2)}
+    `;
+
+    if (item.imageUrl) {
+      html += `<br><img src="${item.imageUrl}" style="width:220px;max-width:100%;border-radius:8px;margin-top:8px;">`;
+    }
+
+    html += `<br><br><small>Right click marker to delete</small>`;
+    return html;
   }
 
   function refreshMarkerVisibility() {
@@ -111,9 +217,13 @@
 
     markerData.forEach(item => {
       if (enabled.includes(item.type)) {
-        if (!map.hasLayer(item.marker)) item.marker.addTo(map);
+        if (!map.hasLayer(item.marker)) {
+          item.marker.addTo(map);
+        }
       } else {
-        if (map.hasLayer(item.marker)) map.removeLayer(item.marker);
+        if (map.hasLayer(item.marker)) {
+          map.removeLayer(item.marker);
+        }
       }
     });
   }
@@ -125,7 +235,11 @@
     markerData.forEach(item => {
       const div = document.createElement('div');
       div.className = 'marker-item';
-      div.innerHTML = `<strong>${item.name}</strong>${item.type}`;
+      div.innerHTML = `
+        <strong>${item.name}</strong>
+        ${item.type}<br>
+        X: ${item.latlng.lng.toFixed(1)} | Y: ${item.latlng.lat.toFixed(1)}
+      `;
 
       div.onclick = () => {
         map.setView(item.latlng, 0);
@@ -136,86 +250,163 @@
     });
   }
 
-  function createMarker(data) {
-    const marker = L.marker(data.latlng)
-      .bindPopup(`<b>${data.name}</b><br>${data.type}`);
-
-    marker.on('contextmenu', () => {
-      if (confirm("Delete marker?")) {
-        map.removeLayer(marker);
-        const i = markerData.findIndex(m => m.marker === marker);
-        if (i > -1) markerData.splice(i, 1);
-        refreshMarkerList();
+  function clearAllMarkersFromMap() {
+    markerData.forEach(item => {
+      if (map.hasLayer(item.marker)) {
+        map.removeLayer(item.marker);
       }
     });
+    markerData = [];
+    refreshMarkerList();
+  }
 
-    data.marker = marker;
-    markerData.push(data);
+  async function saveMarkerToDatabase(data) {
+    const { error } = await supabase.from('markers').insert([
+      {
+        name: data.name,
+        type: data.type,
+        notes: data.notes || '',
+        image_url: data.imageUrl || '',
+        lat: data.latlng.lat,
+        lng: data.latlng.lng
+      }
+    ]);
+
+    if (error) {
+      console.error('Save failed:', error);
+      alert('Failed to save marker');
+      return false;
+    }
+
+    return true;
+  }
+
+  async function deleteMarkerFromDatabase(id, name) {
+    const ok = confirm(`Delete marker "${name}"?`);
+    if (!ok) return false;
+
+    const { error } = await supabase
+      .from('markers')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.error('Delete failed:', error);
+      alert('Failed to delete marker');
+      return false;
+    }
+
+    return true;
+  }
+
+  function attachDeleteHandler(item) {
+    item.marker.on('contextmenu', async () => {
+      const deleted = await deleteMarkerFromDatabase(item.id, item.name);
+      if (deleted) {
+        await loadMarkersFromDatabase();
+      }
+    });
+  }
+
+  function createMarker(data) {
+    const marker = L.marker(data.latlng).bindPopup(buildPopupContent(data));
+
+    const item = {
+      id: data.id,
+      name: data.name,
+      type: data.type,
+      notes: data.notes || '',
+      imageUrl: data.imageUrl || '',
+      latlng: data.latlng,
+      marker: marker
+    };
+
+    attachDeleteHandler(item);
+    markerData.push(item);
 
     refreshMarkerVisibility();
     refreshMarkerList();
   }
 
-  // FORM
-  const form = document.createElement('div');
-  form.style.position = 'absolute';
-  form.style.top = '50%';
-  form.style.left = '50%';
-  form.style.transform = 'translate(-50%, -50%)';
-  form.style.background = '#111827';
-  form.style.padding = '20px';
-  form.style.borderRadius = '10px';
-  form.style.display = 'none';
-  form.style.zIndex = '1000';
-  form.style.color = 'white';
+  async function loadMarkersFromDatabase() {
+    setStatus('Loading markers...');
 
-  form.innerHTML = `
-    <h3>Add Location</h3>
-    <input id="name" placeholder="Name"><br><br>
+    const { data, error } = await supabase
+      .from('markers')
+      .select('*')
+      .order('id', { ascending: true });
 
-    <select id="type">
-      <option>Gang</option>
-      <option>Shop</option>
-      <option>Stash</option>
-      <option>Tables</option>
-      <option>Labs</option>
-      <option>Drug Locations</option>
-    </select><br><br>
+    if (error) {
+      console.error('Load failed:', error);
+      setStatus('Database load failed');
+      return;
+    }
 
-    <button id="save">Save</button>
-    <button id="cancel">Cancel</button>
-  `;
+    clearAllMarkersFromMap();
 
-  document.body.appendChild(form);
+    data.forEach(row => {
+      createMarker({
+        id: row.id,
+        name: row.name,
+        type: row.type,
+        notes: row.notes,
+        imageUrl: row.image_url,
+        latlng: L.latLng(row.lat, row.lng)
+      });
+    });
+
+    setStatus(`Connected • ${data.length} marker(s)`);
+  }
+
+  function clearForm() {
+    nameInput.value = '';
+    typeInput.value = 'Gang';
+    notesInput.value = '';
+    imageInput.value = '';
+  }
 
   map.on('click', e => {
     tempLatLng = e.latlng;
     form.style.display = 'block';
+    nameInput.focus();
   });
 
-  document.getElementById('save').onclick = () => {
-    const name = document.getElementById('name').value;
-    const type = document.getElementById('type').value;
+  document.getElementById('save').onclick = async () => {
+    const name = nameInput.value.trim();
+    const type = typeInput.value;
+    const notes = notesInput.value.trim();
+    const imageUrl = imageInput.value.trim();
 
-    if (!name) return alert("Enter name");
+    if (!name) {
+      alert('Enter a location name');
+      return;
+    }
 
-    createMarker({
+    const saved = await saveMarkerToDatabase({
       name,
       type,
+      notes,
+      imageUrl,
       latlng: tempLatLng
     });
 
+    if (!saved) return;
+
+    clearForm();
     form.style.display = 'none';
-    document.getElementById('name').value = '';
+    await loadMarkersFromDatabase();
   };
 
   document.getElementById('cancel').onclick = () => {
+    clearForm();
     form.style.display = 'none';
   };
 
-  document.querySelectorAll('.filter-checkbox')
-    .forEach(box => box.addEventListener('change', refreshMarkerVisibility));
-</script>
+  document.querySelectorAll('.filter-checkbox').forEach(box => {
+    box.addEventListener('change', refreshMarkerVisibility);
+  });
 
+  loadMarkersFromDatabase();
+</script>
 </body>
 </html>
