@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My GTA Map</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background: #0b1d2a;
+    }
+
+    #app {
+      display: flex;
+      width: 100%;
+      height: 100vh;
+    }
+
+    #sidebar {
+      width: 260px;
+      background: #111827;
+      color: white;
+      padding: 15px;
+      box-sizing: border-box;
+      overflow-y: auto;
+      border-right: 1px solid #222;
+    }
+
+    #sidebar h2 {
+      margin-top: 0;
+    }
+
+    #sidebar label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    #map {
+      flex: 1;
+      height: 100%;
+    }
+
+    .popup-image {
+      width: 220px;
+      max-width: 100%;
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+
+    .marker-item {
+      padding: 8px;
+      margin-bottom: 8px;
+      background: #1f2937;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="app">
+  <div id="sidebar">
+    <h2>Filters</h2>
+
+    <label><input type="checkbox" class="filter-checkbox" value="Gang" checked> Gang</label>
+    <label><input type="checkbox" class="filter-checkbox" value="Shop" checked> Shop</label>
+    <label><input type="checkbox" class="filter-checkbox" value="Stash" checked> Stash</label>
+    <label><input type="checkbox" class="filter-checkbox" value="Tables" checked> Tables</label>
+    <label><input type="checkbox" class="filter-checkbox" value="Labs" checked> Labs</label>
+    <label><input type="checkbox" class="filter-checkbox" value="Drug Locations" checked> Drug Locations</label>
+
+    <h3>Locations</h3>
+    <div id="markerList"></div>
+  </div>
+
+  <div id="map"></div>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  const imageWidth = 6144;
+  const imageHeight = 6144;
+
+  const markerData = [];
+  let tempLatLng = null;
+
+  const map = L.map('map', {
+    crs: L.CRS.Simple,
+    minZoom: -2,
+    maxZoom: 2
+  });
+
+  const bounds = [[0, 0], [imageHeight, imageWidth]];
+  L.imageOverlay('GTAV-HD-MAP-satellite.jpg', bounds).addTo(map);
+  map.fitBounds(bounds);
+
+  function getEnabledTypes() {
+    return Array.from(document.querySelectorAll('.filter-checkbox:checked'))
+      .map(box => box.value);
+  }
+
+  function refreshMarkerVisibility() {
+    const enabled = getEnabledTypes();
+
+    markerData.forEach(item => {
+      if (enabled.includes(item.type)) {
+        if (!map.hasLayer(item.marker)) item.marker.addTo(map);
+      } else {
+        if (map.hasLayer(item.marker)) map.removeLayer(item.marker);
+      }
+    });
+  }
+
+  function refreshMarkerList() {
+    const list = document.getElementById('markerList');
+    list.innerHTML = '';
+
+    markerData.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'marker-item';
+      div.innerHTML = `<strong>${item.name}</strong>${item.type}`;
+
+      div.onclick = () => {
+        map.setView(item.latlng, 0);
+        item.marker.openPopup();
+      };
+
+      list.appendChild(div);
+    });
+  }
+
+  function createMarker(data) {
+    const marker = L.marker(data.latlng)
+      .bindPopup(`<b>${data.name}</b><br>${data.type}`);
+
+    marker.on('contextmenu', () => {
+      if (confirm("Delete marker?")) {
+        map.removeLayer(marker);
+        const i = markerData.findIndex(m => m.marker === marker);
+        if (i > -1) markerData.splice(i, 1);
+        refreshMarkerList();
+      }
+    });
+
+    data.marker = marker;
+    markerData.push(data);
+
+    refreshMarkerVisibility();
+    refreshMarkerList();
+  }
+
+  // FORM
+  const form = document.createElement('div');
+  form.style.position = 'absolute';
+  form.style.top = '50%';
+  form.style.left = '50%';
+  form.style.transform = 'translate(-50%, -50%)';
+  form.style.background = '#111827';
+  form.style.padding = '20px';
+  form.style.borderRadius = '10px';
+  form.style.display = 'none';
+  form.style.zIndex = '1000';
+  form.style.color = 'white';
+
+  form.innerHTML = `
+    <h3>Add Location</h3>
+    <input id="name" placeholder="Name"><br><br>
+
+    <select id="type">
+      <option>Gang</option>
+      <option>Shop</option>
+      <option>Stash</option>
+      <option>Tables</option>
+      <option>Labs</option>
+      <option>Drug Locations</option>
+    </select><br><br>
+
+    <button id="save">Save</button>
+    <button id="cancel">Cancel</button>
+  `;
+
+  document.body.appendChild(form);
+
+  map.on('click', e => {
+    tempLatLng = e.latlng;
+    form.style.display = 'block';
+  });
+
+  document.getElementById('save').onclick = () => {
+    const name = document.getElementById('name').value;
+    const type = document.getElementById('type').value;
+
+    if (!name) return alert("Enter name");
+
+    createMarker({
+      name,
+      type,
+      latlng: tempLatLng
+    });
+
+    form.style.display = 'none';
+    document.getElementById('name').value = '';
+  };
+
+  document.getElementById('cancel').onclick = () => {
+    form.style.display = 'none';
+  };
+
+  document.querySelectorAll('.filter-checkbox')
+    .forEach(box => box.addEventListener('change', refreshMarkerVisibility));
+</script>
+
+</body>
+</html>
