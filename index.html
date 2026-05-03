@@ -98,3 +98,1074 @@
       margin-bottom: 28px;
       border-bottom: 1px solid var(--border);
     }
+
+    .tab-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+    }
+
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    .field input {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 14px;
+      padding: 10px 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .field input:focus {
+      border-color: var(--accent);
+    }
+
+    .field .hint {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 5px;
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    .auth-btn {
+      width: 100%;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 13px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: all 0.2s;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    }
+
+    .auth-btn:hover {
+      background: #f5c842;
+      transform: translateY(-1px);
+    }
+
+    .auth-msg {
+      margin-top: 14px;
+      font-size: 13px;
+      text-align: center;
+      min-height: 20px;
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    .auth-msg.error { color: var(--danger); }
+    .auth-msg.success { color: var(--success); }
+
+    /* =================== MAP SCREEN =================== */
+    #mapScreen {
+      display: none;
+      width: 100%;
+      height: 100vh;
+      flex-direction: column;
+    }
+
+    #topBar {
+      height: 48px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 16px;
+      flex-shrink: 0;
+      z-index: 500;
+    }
+
+    .top-logo {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .group-badge {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      background: rgba(240,180,41,0.1);
+      border: 1px solid rgba(240,180,41,0.3);
+      color: var(--accent);
+      padding: 3px 10px;
+      letter-spacing: 2px;
+    }
+
+    .top-spacer { flex: 1; }
+
+    .top-status {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .user-badge {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: var(--text);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 3px 10px;
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .logout-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      padding: 5px 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-transform: uppercase;
+    }
+
+    .logout-btn:hover {
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    #mainArea {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    #sidebar {
+      width: 240px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .sidebar-section {
+      padding: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .filter-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 7px;
+      cursor: pointer;
+    }
+
+    .filter-item input[type="checkbox"] {
+      accent-color: var(--accent);
+      width: 14px;
+      height: 14px;
+    }
+
+    .filter-item span {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .type-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .online-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .online-user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: var(--text);
+    }
+
+    .online-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 8px rgba(63,185,80,0.6);
+      flex-shrink: 0;
+    }
+
+    .online-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .nickname-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .nickname-row input {
+      min-width: 0;
+      flex: 1;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      padding: 7px 8px;
+      outline: none;
+    }
+
+    .nickname-row input:focus {
+      border-color: var(--accent);
+    }
+
+    .nickname-row button {
+      background: var(--accent);
+      border: none;
+      color: #000;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 7px 9px;
+      cursor: pointer;
+    }
+
+    #markerList {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+    }
+
+    #markerList::-webkit-scrollbar { width: 4px; }
+    #markerList::-webkit-scrollbar-track { background: transparent; }
+    #markerList::-webkit-scrollbar-thumb { background: var(--border); }
+
+    .marker-item {
+      padding: 8px 10px;
+      margin-bottom: 6px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .marker-item:hover {
+      border-color: var(--accent);
+      background: rgba(240,180,41,0.05);
+    }
+
+    .marker-item-name {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .marker-item-meta {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    #map {
+      flex: 1;
+      height: 100%;
+    }
+
+    /* =================== ADD FORM =================== */
+    #locationForm {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 2px solid var(--accent);
+      padding: 24px;
+      display: none;
+      z-index: 1000;
+      width: 320px;
+      clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+    }
+
+    #locationForm h3 {
+      font-size: 16px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .form-hint {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+    }
+
+    #locationForm input,
+    #locationForm select,
+    #locationForm textarea {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 13px;
+      padding: 8px 12px;
+      margin-bottom: 10px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    #locationForm input:focus,
+    #locationForm select:focus,
+    #locationForm textarea:focus {
+      border-color: var(--accent);
+    }
+
+    #locationForm select option {
+      background: var(--surface2);
+    }
+
+    .form-btns {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .btn-save {
+      flex: 1;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-save:hover { background: #f5c842; }
+
+    .btn-cancel {
+      flex: 1;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-cancel:hover {
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    /* Leaflet popup custom style */
+    .leaflet-popup-content-wrapper {
+      background: var(--surface) !important;
+      color: var(--text) !important;
+      border: 1px solid var(--border) !important;
+      border-radius: 0 !important;
+      font-family: 'Rajdhani', sans-serif !important;
+    }
+
+    .leaflet-popup-tip {
+      background: var(--surface) !important;
+    }
+
+    .popup-name {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .popup-meta {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .popup-delete {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div id="authScreen">
+  <div class="auth-grid"></div>
+  <div class="auth-box">
+    <div class="auth-logo">
+      <div class="title">GTA MAP</div>
+      <div class="subtitle">TACTICAL OPERATIONS GRID</div>
+    </div>
+
+    <div class="tab-row">
+      <button class="tab-btn active" id="tabLogin" onclick="switchTab('login')">Login</button>
+      <button class="tab-btn" id="tabSignup" onclick="switchTab('signup')">Sign Up</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="loginForm">
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="loginEmail" placeholder="operator@city.com">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢">
+      </div>
+      <div class="field">
+        <label>Invite Code</label>
+        <input type="text" id="loginGroup" placeholder="e.g. LSCITY" style="text-transform:uppercase">
+        <div class="hint">Use the server code for the map you want to open.</div>
+      </div>
+      <div class="field">
+        <label>Nickname</label>
+        <input type="text" id="loginNickname" placeholder="Your display name" maxlength="24">
+        <div class="hint">Shown to other online users instead of your email.</div>
+      </div>
+      <button class="auth-btn" onclick="doLogin()">Access Grid</button>
+    </div>
+
+    <!-- SIGNUP -->
+    <div id="signupForm" style="display:none">
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="signupEmail" placeholder="operator@city.com">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="signupPassword" placeholder="Min 6 characters">
+      </div>
+      <div class="field">
+        <label>Group Code</label>
+        <input type="text" id="signupGroup" placeholder="e.g. LSCITY" style="text-transform:uppercase">
+        <div class="hint">Enter your group's code to join their map. Create a new code to start your own.</div>
+      </div>
+      <div class="field">
+        <label>Nickname</label>
+        <input type="text" id="signupNickname" placeholder="Your display name" maxlength="24">
+        <div class="hint">Shown to other online users instead of your email.</div>
+      </div>
+      <button class="auth-btn" onclick="doSignup()">Join Grid</button>
+    </div>
+
+    <div class="auth-msg" id="authMsg"></div>
+  </div>
+</div>
+
+<!-- MAP SCREEN -->
+<div id="mapScreen">
+  <div id="topBar">
+    <div class="top-logo">GTA Map</div>
+    <div class="group-badge" id="groupBadge">GROUP</div>
+    <div class="top-spacer"></div>
+    <div class="top-status" id="topStatus">Loading...</div>
+    <div class="user-badge" id="userBadge">USER</div>
+    <button class="logout-btn" onclick="doLogout()">Logout</button>
+  </div>
+
+  <div id="mainArea">
+    <div id="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Online</div>
+        <div class="online-list" id="onlineList">
+          <div class="online-user">
+            <div class="online-dot"></div>
+            <div class="online-name">Connecting...</div>
+          </div>
+        </div>
+        <div class="nickname-row">
+          <input type="text" id="nicknameInput" placeholder="Nickname" maxlength="24">
+          <button id="nicknameBtn">Set</button>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">Filters</div>
+        <label class="filter-item">
+          <input type="checkbox" class="filter-checkbox" value="Gang" checked>
+          <div class="type-dot" style="background:#ef4444"></div>
+          <span>Gang</span>
+        </label>
+        <label class="filter-item">
+          <input type="checkbox" class="filter-checkbox" value="Shop" checked>
+          <div class="type-dot" style="background:#3b82f6"></div>
+          <span>Shop</span>
+        </label>
+        <label class="filter-item">
+          <input type="checkbox" class="filter-checkbox" value="Stash" checked>
+          <div class="type-dot" style="background:#8b5cf6"></div>
+          <span>Stash</span>
+        </label>
+        <label class="filter-item">
+          <input type="checkbox" class="filter-checkbox" value="Tables" checked>
+          <div class="type-dot" style="background:#f59e0b"></div>
+          <span>Tables</span>
+        </label>
+        <label class="filter-item">
+          <input type="checkbox" class="filter-checkbox" value="Labs" checked>
+          <div class="type-dot" style="background:#10b981"></div>
+          <span>Labs</span>
+        </label>
+        <label class="filter-item">
+          <input type="checkbox" class="filter-checkbox" value="Drug Locations" checked>
+          <div class="type-dot" style="background:#ec4899"></div>
+          <span>Drug Locations</span>
+        </label>
+        <label class="filter-item">
+          <input type="checkbox" class="filter-checkbox" value="Food" checked>
+          <div class="type-dot" style="background:#f0b429"></div>
+          <span>Food</span>
+        </label>
+      </div>
+
+      <div class="sidebar-label" style="padding:14px 14px 0">Locations</div>
+      <div id="markerList"></div>
+    </div>
+
+    <div id="map"></div>
+  </div>
+</div>
+
+<!-- ADD MARKER FORM -->
+<div id="locationForm">
+  <h3>Add Location</h3>
+  <div class="form-hint">Left click map to place â€¢ Right click marker to delete</div>
+  <input id="name" type="text" placeholder="Location name">
+  <select id="type">
+    <option>Gang</option>
+    <option>Shop</option>
+    <option>Stash</option>
+    <option>Tables</option>
+    <option>Labs</option>
+    <option>Drug Locations</option>
+    <option>Food</option>
+  </select>
+  <textarea id="notes" rows="3" placeholder="Notes (optional)"></textarea>
+  <input id="imageUrl" type="text" placeholder="Image URL (optional)">
+  <div class="form-btns">
+    <button class="btn-save" id="saveBtn">Save</button>
+    <button class="btn-cancel" id="cancelBtn">Cancel</button>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = 'https://natkxmsuucejncckhwkl.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5hdGt4bXN1dWNlam5jY2tod2tsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0ODI5MDQsImV4cCI6MjA5MDA1ODkwNH0.-LqvCtT0dANK2ZJTDsVITKnQfToYyMsDzf1DnKIyplo';
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const typeColors = {
+    'Gang': '#ef4444',
+    'Shop': '#3b82f6',
+    'Stash': '#8b5cf6',
+    'Tables': '#f59e0b',
+    'Labs': '#10b981',
+    'Drug Locations': '#ec4899',
+    'Food': '#f0b429'
+  };
+
+  let currentUser = null;
+  let currentGroup = null;
+  let markerData = [];
+  let tempLatLng = null;
+  let leafletMap = null;
+  let presenceChannel = null;
+  let currentNickname = '';
+
+  // =================== AUTH ===================
+  function switchTab(tab) {
+    document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
+    document.getElementById('signupForm').style.display = tab === 'signup' ? 'block' : 'none';
+    document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+    document.getElementById('tabSignup').classList.toggle('active', tab === 'signup');
+    document.getElementById('authMsg').textContent = '';
+  }
+
+  function showAuthMsg(msg, type) {
+    const el = document.getElementById('authMsg');
+    el.textContent = msg;
+    el.className = 'auth-msg ' + type;
+  }
+
+  function normalizeEmail(email) {
+    return email.trim().toLowerCase();
+  }
+
+  function normalizeGroupCode(code) {
+    return code.trim().toUpperCase().replace(/[^A-Z0-9_-]/g, '');
+  }
+
+  function normalizeNickname(name) {
+    return name.trim().replace(/\s+/g, ' ').slice(0, 24);
+  }
+
+  async function saveUserGroup(user, group) {
+    const { error } = await sb.from('profiles').upsert([{
+      id: user.id,
+      group_code: group
+    }]);
+
+    if (error) {
+      console.warn('Profile save warning:', error.message);
+    }
+
+    return !error;
+  }
+
+  function fallbackNickname(user) {
+    return 'User-' + String(user.id || '0000').slice(0, 4).toUpperCase();
+  }
+
+  function getNickname(user) {
+    return normalizeNickname(localStorage.getItem('nickname_' + user.id) || '') || fallbackNickname(user);
+  }
+
+  function setCurrentNickname(name) {
+    currentNickname = normalizeNickname(name) || fallbackNickname(currentUser);
+    localStorage.setItem('nickname_' + currentUser.id, currentNickname);
+    document.getElementById('nicknameInput').value = currentNickname;
+    document.getElementById('userBadge').textContent = currentNickname;
+  }
+
+  function escapeHtml(value) {
+    return String(value)
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#039;');
+  }
+
+  function renderOnlineUsers() {
+    const list = document.getElementById('onlineList');
+    if (!list || !presenceChannel) return;
+
+    const state = presenceChannel.presenceState();
+    const users = Object.values(state)
+      .flat()
+      .map(presence => presence.nickname || 'Unknown user')
+      .filter((name, index, all) => all.indexOf(name) === index)
+      .sort((a, b) => a.localeCompare(b));
+
+    if (!users.length) {
+      list.innerHTML = `
+        <div class="online-user">
+          <div class="online-dot"></div>
+          <div class="online-name">No one online</div>
+        </div>
+      `;
+      return;
+    }
+
+    list.innerHTML = users.map(name => {
+      const safeName = escapeHtml(name);
+      return `
+      <div class="online-user">
+        <div class="online-dot"></div>
+        <div class="online-name" title="${safeName}">${safeName}</div>
+      </div>
+    `;
+    }).join('');
+  }
+
+  async function trackPresence() {
+    if (!presenceChannel || !currentUser || !currentGroup) return;
+
+    await presenceChannel.track({
+      user_id: currentUser.id,
+      nickname: currentNickname,
+      group_code: currentGroup,
+      online_at: new Date().toISOString()
+    });
+  }
+
+  async function stopPresence() {
+    if (!presenceChannel) return;
+    await sb.removeChannel(presenceChannel);
+    presenceChannel = null;
+  }
+
+  async function startPresence() {
+    await stopPresence();
+
+    const channelName = 'online-' + currentGroup;
+    presenceChannel = sb.channel(channelName, {
+      config: {
+        presence: {
+          key: currentUser.id
+        }
+      }
+    });
+
+    presenceChannel
+      .on('presence', { event: 'sync' }, renderOnlineUsers)
+      .on('presence', { event: 'join' }, renderOnlineUsers)
+      .on('presence', { event: 'leave' }, renderOnlineUsers)
+      .subscribe(async status => {
+        if (status === 'SUBSCRIBED') {
+          await trackPresence();
+        }
+      });
+  }
+
+  async function doLogin() {
+    const email = normalizeEmail(document.getElementById('loginEmail').value);
+    const pass = document.getElementById('loginPassword').value;
+    const group = normalizeGroupCode(document.getElementById('loginGroup').value);
+    const nickname = normalizeNickname(document.getElementById('loginNickname').value);
+    if (!email || !pass || !group || !nickname) return showAuthMsg('Fill in all fields.', 'error');
+
+    showAuthMsg('Connecting...', '');
+    const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+    if (error) return showAuthMsg(error.message, 'error');
+
+    localStorage.setItem('pending_group_' + email, group);
+    localStorage.setItem('nickname_' + data.user.id, nickname);
+    await saveUserGroup(data.user, group);
+    await initMap(data.user, group);
+  }
+
+  async function doSignup() {
+    const email = normalizeEmail(document.getElementById('signupEmail').value);
+    const pass = document.getElementById('signupPassword').value;
+    const group = normalizeGroupCode(document.getElementById('signupGroup').value);
+    const nickname = normalizeNickname(document.getElementById('signupNickname').value);
+
+    if (!email || !pass || !group || !nickname) return showAuthMsg('Fill in all fields.', 'error');
+    if (pass.length < 6) return showAuthMsg('Password must be at least 6 characters.', 'error');
+
+    showAuthMsg('Creating account...', '');
+    const { data, error } = await sb.auth.signUp({ email, password: pass });
+    if (error) return showAuthMsg(error.message, 'error');
+
+    // Store group code locally as backup in case user isn't confirmed yet
+    localStorage.setItem('pending_group_' + email, group);
+    localStorage.setItem('pending_nickname_' + email, nickname);
+
+    if (data.user) {
+      localStorage.setItem('nickname_' + data.user.id, nickname);
+      await saveUserGroup(data.user, group);
+    }
+
+    showAuthMsg('Check your email to verify your account, then log in.', 'success');
+  }
+
+  async function doLogout() {
+    await stopPresence();
+    await sb.auth.signOut();
+    currentUser = null;
+    currentGroup = null;
+    markerData = [];
+    document.getElementById('mapScreen').style.display = 'none';
+    document.getElementById('authScreen').style.display = 'flex';
+    document.getElementById('authMsg').textContent = '';
+    document.getElementById('onlineList').innerHTML = '';
+    currentNickname = '';
+  }
+
+  // =================== MAP INIT ===================
+  async function initMap(user, requestedGroup = null) {
+    currentUser = user;
+
+    let group = requestedGroup || localStorage.getItem('pending_group_' + user.email);
+    let { data: profile, error } = await sb.from('profiles').select('group_code').eq('id', user.id).maybeSingle();
+    
+    if (error) {
+      console.warn('Profile load warning:', error.message);
+    }
+
+    if (!group && profile?.group_code) {
+      group = profile.group_code;
+    }
+
+    if (!group) {
+      await sb.auth.signOut();
+      return showAuthMsg('Enter an invite code for the server map you want to open.', 'error');
+    }
+
+    currentGroup = normalizeGroupCode(group);
+    await saveUserGroup(user, currentGroup);
+
+    const pendingNickname = normalizeNickname(localStorage.getItem('pending_nickname_' + user.email) || '');
+    if (pendingNickname && !localStorage.getItem('nickname_' + user.id)) {
+      localStorage.setItem('nickname_' + user.id, pendingNickname);
+    }
+
+    localStorage.removeItem('pending_group_' + user.email);
+    localStorage.removeItem('pending_nickname_' + user.email);
+
+    document.getElementById('authScreen').style.display = 'none';
+    document.getElementById('mapScreen').style.display = 'flex';
+    document.getElementById('groupBadge').textContent = currentGroup;
+    setCurrentNickname(getNickname(user));
+    await startPresence();
+
+    if (!leafletMap) {
+      leafletMap = L.map('map', {
+        crs: L.CRS.Simple,
+        minZoom: -2,
+        maxZoom: 2
+      });
+
+      const bounds = [[0, 0], [6144, 6144]];
+      L.imageOverlay('https://ikxhmamxg9gwysr8.public.blob.vercel-storage.com/GTAV-HD-MAP-satellite.jpg', bounds).addTo(leafletMap);
+      leafletMap.fitBounds(bounds);
+
+      leafletMap.on('click', e => {
+        tempLatLng = e.latlng;
+        document.getElementById('locationForm').style.display = 'block';
+        document.getElementById('name').focus();
+      });
+    }
+
+    await loadMarkers();
+  }
+
+  // =================== MARKERS ===================
+  function getEnabledTypes() {
+    return Array.from(document.querySelectorAll('.filter-checkbox:checked')).map(b => b.value);
+  }
+
+  function makeIcon(type) {
+    const color = typeColors[type] || '#f0b429';
+    return L.divIcon({
+      className: '',
+      html: `<div style="
+        width:14px;height:14px;
+        background:${color};
+        border:2px solid rgba(255,255,255,0.6);
+        border-radius:50%;
+        box-shadow:0 0 8px ${color}88;
+      "></div>`,
+      iconSize: [14, 14],
+      iconAnchor: [7, 7]
+    });
+  }
+
+  function buildPopup(item) {
+    let html = `
+      <div class="popup-name">${item.name}</div>
+      <div class="popup-meta">
+        TYPE: ${item.type}<br>
+        ${item.notes ? 'NOTES: ' + item.notes + '<br>' : ''}
+        X: ${item.latlng.lng.toFixed(1)} | Y: ${item.latlng.lat.toFixed(1)}
+      </div>
+    `;
+    if (item.imageUrl) {
+      html += `<img src="${item.imageUrl}" style="width:200px;margin-top:8px;border-radius:4px;display:block;">`;
+    }
+    html += `<div class="popup-delete">Right-click marker to delete</div>`;
+    return html;
+  }
+
+  function refreshVisibility() {
+    const enabled = getEnabledTypes();
+    markerData.forEach(item => {
+      if (enabled.includes(item.type)) {
+        if (!leafletMap.hasLayer(item.marker)) item.marker.addTo(leafletMap);
+      } else {
+        if (leafletMap.hasLayer(item.marker)) leafletMap.removeLayer(item.marker);
+      }
+    });
+  }
+
+  function refreshList() {
+    const list = document.getElementById('markerList');
+    list.innerHTML = '';
+    markerData.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'marker-item';
+      const color = typeColors[item.type] || '#f0b429';
+      div.innerHTML = `
+        <div class="marker-item-name" style="color:${color}">${item.name}</div>
+        <div class="marker-item-meta">${item.type} â€¢ ${item.latlng.lng.toFixed(0)}, ${item.latlng.lat.toFixed(0)}</div>
+      `;
+      div.onclick = () => { leafletMap.setView(item.latlng, 0); item.marker.openPopup(); };
+      list.appendChild(div);
+    });
+  }
+
+  function clearMarkers() {
+    markerData.forEach(item => { if (leafletMap.hasLayer(item.marker)) leafletMap.removeLayer(item.marker); });
+    markerData = [];
+  }
+
+  function addMarkerToMap(data) {
+    const marker = L.marker(data.latlng, { icon: makeIcon(data.type) }).bindPopup(buildPopup(data));
+    const item = { ...data, marker };
+
+    marker.on('contextmenu', async () => {
+      if (!confirm(`Delete "${item.name}"?`)) return;
+      const { error } = await sb.from('markers').delete().eq('id', item.id);
+      if (error) return alert('Delete failed: ' + error.message);
+      await loadMarkers();
+    });
+
+    markerData.push(item);
+    refreshVisibility();
+    refreshList();
+  }
+
+  async function loadMarkers() {
+    document.getElementById('topStatus').textContent = 'Loading...';
+
+    const { data, error } = await sb.from('markers').select('*').eq('group_code', currentGroup).order('id');
+    if (error) {
+      const details = error.message || error.details || error.hint || error.code || JSON.stringify(error);
+      const message = 'Marker load failed: ' + details;
+      console.error(message, error);
+      document.getElementById('topStatus').textContent = message;
+      alert(message);
+      return;
+    }
+
+    clearMarkers();
+    data.forEach(row => addMarkerToMap({
+      id: row.id,
+      name: row.name,
+      type: row.type,
+      notes: row.notes || '',
+      imageUrl: row.image_url || '',
+      latlng: L.latLng(row.lat, row.lng)
+    }));
+
+    document.getElementById('topStatus').textContent = `${currentGroup} â€¢ ${data.length} marker(s)`;
+  }
+
+  // =================== FORM ===================
+  document.getElementById('saveBtn').onclick = async () => {
+    const name = document.getElementById('name').value.trim();
+    const type = document.getElementById('type').value;
+    const notes = document.getElementById('notes').value.trim();
+    const imageUrl = document.getElementById('imageUrl').value.trim();
+
+    if (!name) return alert('Enter a location name.');
+
+    const { error } = await sb.from('markers').insert([{
+      name, type, notes, image_url: imageUrl,
+      lat: tempLatLng.lat, lng: tempLatLng.lng,
+      group_code: currentGroup
+    }]);
+
+    if (error) return alert('Save failed: ' + error.message);
+
+    document.getElementById('name').value = '';
+    document.getElementById('notes').value = '';
+    document.getElementById('imageUrl').value = '';
+    document.getElementById('locationForm').style.display = 'none';
+    await loadMarkers();
+  };
+
+  document.getElementById('cancelBtn').onclick = () => {
+    document.getElementById('locationForm').style.display = 'none';
+  };
+
+  document.getElementById('nicknameBtn').onclick = async () => {
+    if (!currentUser) return;
+    setCurrentNickname(document.getElementById('nicknameInput').value);
+    await trackPresence();
+  };
+
+  document.getElementById('nicknameInput').addEventListener('keydown', async event => {
+    if (event.key !== 'Enter' || !currentUser) return;
+    setCurrentNickname(event.target.value);
+    await trackPresence();
+  });
+
+  document.querySelectorAll('.filter-checkbox').forEach(box => {
+    box.addEventListener('change', refreshVisibility);
+  });
+
+  // =================== AUTO LOGIN ===================
+  sb.auth.getSession().then(async ({ data: { session } }) => {
+    if (session) await initMap(session.user);
+  });
+</script>
+</body>
+</html>
