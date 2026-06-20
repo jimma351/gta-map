@@ -1267,9 +1267,15 @@
     box.addEventListener('change', refreshVisibility);
   });
 
-  // =================== AUTO LOGIN ===================
-  sb.auth.getSession().then(async ({ data: { session } }) => {
-    if (session) await initMap(session.user);
+  // =================== FRESH START ===================
+  sb.auth.signOut().finally(() => {
+    currentUser = null;
+    currentGroup = null;
+    markerData = [];
+    currentNickname = '';
+    document.getElementById('mapScreen').style.display = 'none';
+    document.getElementById('authScreen').style.display = 'flex';
+    document.getElementById('authMsg').textContent = '';
   });
 </script>
 </body>
