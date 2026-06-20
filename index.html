@@ -939,11 +939,11 @@
   async function ensureDiscordAccess(user) {
     showAuthMsg('Checking Discord access...', '');
 
-    const { data, error } = await sb.functions.invoke('discord-access-check');
+    const { data, error } = await sb.functions.invoke('hyper-endpoint');
     if (error) {
       console.error('Discord access check failed:', error);
       await sb.auth.signOut();
-      showAuthMsg('Discord server check failed. Finish the Supabase Edge Function setup.', 'error');
+      showAuthMsg(error.message || 'Discord server check failed. Finish the Supabase Edge Function setup.', 'error');
       return false;
     }
 
