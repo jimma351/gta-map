@@ -35,9 +35,14 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
-      background: #010101;
+      background-color: #010101;
+      background-image: url('jimmas-rp-tools-bg.png');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: min(150vw, 1600px) auto;
       position: relative;
       overflow: hidden;
+      isolation: isolate;
     }
 
     #authScreen::before {
@@ -45,24 +50,11 @@
       position: absolute;
       inset: 0;
       background: 
-        linear-gradient(rgba(0,0,0,0.28), rgba(0,0,0,0.74)),
+        linear-gradient(rgba(0,0,0,0.05), rgba(0,0,0,0.34)),
         radial-gradient(ellipse 60% 50% at 20% 50%, rgba(240,180,41,0.07) 0%, transparent 70%),
         radial-gradient(ellipse 50% 60% at 80% 50%, rgba(224,92,42,0.05) 0%, transparent 70%);
       pointer-events: none;
       z-index: 1;
-    }
-
-    #authScreen::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: url('jimmas-rp-tools-bg.png');
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: min(145vw, 1500px) auto;
-      opacity: 0.55;
-      pointer-events: none;
-      z-index: 0;
     }
 
     .auth-grid {
@@ -80,11 +72,11 @@
       position: relative;
       z-index: 10;
       width: 400px;
-      background: rgba(13,17,23,0.24);
+      background: rgba(13,17,23,0.06);
       border: 1px solid rgba(240,180,41,0.16);
       border-top: 2px solid var(--accent);
       padding: 40px;
-      backdrop-filter: blur(6px);
+      backdrop-filter: blur(1px);
       clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
     }
 
@@ -464,7 +456,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: rgba(13,17,23,0.24);
+      background: rgba(13,17,23,0.06);
       border: 1px solid rgba(240,180,41,0.16);
       border-top: 2px solid var(--accent);
       padding: 24px;
