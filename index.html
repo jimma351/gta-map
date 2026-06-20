@@ -191,6 +191,12 @@
     .auth-msg.error { color: var(--danger); }
     .auth-msg.success { color: var(--success); }
 
+    .discord-auth .tab-row,
+    .discord-auth #loginForm,
+    .discord-auth #signupForm {
+      display: none !important;
+    }
+
     /* =================== MAP SCREEN =================== */
     #mapScreen {
       display: none;
@@ -574,7 +580,7 @@
 <body>
 
 <!-- AUTH SCREEN -->
-<div id="authScreen">
+<div id="authScreen" class="discord-auth">
   <div class="auth-grid"></div>
   <div class="auth-box">
     <div class="auth-logo">
@@ -622,6 +628,20 @@
         <div class="hint">Enter your group's code to join their map. Create a new code to start your own.</div>
       </div>
       <button class="auth-btn" onclick="doSignup()">Join Grid</button>
+    </div>
+
+    <div id="discordForm">
+      <div class="field">
+        <label>Display Name</label>
+        <input type="text" id="discordNickname" placeholder="Your map name" maxlength="24">
+        <div class="hint">Shown to other online users.</div>
+      </div>
+      <div class="field">
+        <label>Invite Code</label>
+        <input type="text" id="discordGroup" placeholder="e.g. LSCITY" style="text-transform:uppercase">
+        <div class="hint">Use the server code for the map you want to open.</div>
+      </div>
+      <button class="auth-btn" onclick="connectDiscord()">Connect Discord</button>
     </div>
 
     <div class="auth-msg" id="authMsg"></div>
@@ -774,6 +794,11 @@
     return `${username}@${AUTH_EMAIL_DOMAIN}`;
   }
 
+  function getDisplayNameFromUser(user) {
+    const metadata = user.user_metadata || {};
+    return normalizeNickname(metadata.full_name || metadata.name || metadata.user_name || metadata.preferred_username || '');
+  }
+
   function normalizeGroupCode(code) {
     return code.trim().toUpperCase().replace(/[^A-Z0-9_-]/g, '');
   }
@@ -891,6 +916,50 @@
       });
   }
 
+  async function connectDiscord() {
+    const nickname = normalizeNickname(document.getElementById('discordNickname').value);
+    const group = normalizeGroupCode(document.getElementById('discordGroup').value);
+    if (!nickname) return showAuthMsg('Enter a display name first.', 'error');
+    if (!group) return showAuthMsg('Enter an invite code first.', 'error');
+
+    localStorage.setItem('pending_group_discord', group);
+    localStorage.setItem('pending_nickname_discord', nickname);
+    showAuthMsg('Redirecting to Discord...', '');
+
+    const { error } = await sb.auth.signInWithOAuth({
+      provider: 'discord',
+      options: {
+        redirectTo: window.location.origin + window.location.pathname
+      }
+    });
+
+    if (error) showAuthMsg(error.message, 'error');
+  }
+
+  async function ensureDiscordAccess(user) {
+    showAuthMsg('Checking Discord access...', '');
+
+    const { data, error } = await sb.functions.invoke('discord-access-check');
+    if (error) {
+      console.error('Discord access check failed:', error);
+      await sb.auth.signOut();
+      showAuthMsg('Discord server check failed. Finish the Supabase Edge Function setup.', 'error');
+      return false;
+    }
+
+    if (!data?.allowed) {
+      await sb.auth.signOut();
+      showAuthMsg(data?.message || 'Join the required Discord server/role before opening this map.', 'error');
+      return false;
+    }
+
+    const fallbackNickname = normalizeNickname(data.username || data.global_name || getDisplayNameFromUser(user));
+    if (fallbackNickname && !localStorage.getItem('nickname_' + user.id)) {
+      localStorage.setItem('nickname_' + user.id, fallbackNickname);
+    }
+    return true;
+  }
+
   async function doLogin() {
     const username = normalizeUsername(document.getElementById('loginUsername').value);
     const email = usernameToAuthEmail(username);
@@ -954,7 +1023,7 @@
   async function initMap(user, requestedGroup = null) {
     currentUser = user;
 
-    let group = requestedGroup || localStorage.getItem('pending_group_' + user.email);
+    let group = requestedGroup || localStorage.getItem('pending_group_discord') || localStorage.getItem('pending_group_' + user.email);
     let { data: profile, error } = await sb.from('profiles').select('group_code').eq('id', user.id).maybeSingle();
     
     if (error) {
@@ -970,16 +1039,20 @@
       return showAuthMsg('Enter an invite code for the server map you want to open.', 'error');
     }
 
+    if (!(await ensureDiscordAccess(user))) return;
+
     currentGroup = normalizeGroupCode(group);
     await saveUserGroup(user, currentGroup);
 
-    const pendingNickname = normalizeNickname(localStorage.getItem('pending_nickname_' + user.email) || '');
+    const pendingNickname = normalizeNickname(localStorage.getItem('pending_nickname_discord') || localStorage.getItem('pending_nickname_' + user.email) || '');
     if (pendingNickname && !localStorage.getItem('nickname_' + user.id)) {
       localStorage.setItem('nickname_' + user.id, pendingNickname);
     }
 
     localStorage.removeItem('pending_group_' + user.email);
     localStorage.removeItem('pending_nickname_' + user.email);
+    localStorage.removeItem('pending_group_discord');
+    localStorage.removeItem('pending_nickname_discord');
 
     document.getElementById('authScreen').style.display = 'none';
     document.getElementById('mapScreen').style.display = 'flex';
