@@ -36,7 +36,7 @@
       justify-content: center;
       height: 100vh;
       background-color: #010101;
-      background-image: url('jimmas-rp-tools-bg.png');
+      background-image: none;
       background-position: center;
       background-repeat: no-repeat;
       background-size: min(150vw, 1600px) auto;
@@ -50,7 +50,7 @@
       position: absolute;
       inset: 0;
       background: 
-        linear-gradient(rgba(0,0,0,0.05), rgba(0,0,0,0.34)),
+        linear-gradient(rgba(0,0,0,0.02), rgba(0,0,0,0.22)),
         radial-gradient(ellipse 60% 50% at 20% 50%, rgba(240,180,41,0.07) 0%, transparent 70%),
         radial-gradient(ellipse 50% 60% at 80% 50%, rgba(224,92,42,0.05) 0%, transparent 70%);
       pointer-events: none;
@@ -65,7 +65,7 @@
         linear-gradient(90deg, rgba(240,180,41,0.03) 1px, transparent 1px);
       background-size: 40px 40px;
       pointer-events: none;
-      z-index: 2;
+      z-index: 3;
     }
 
     .auth-box {
@@ -78,6 +78,19 @@
       padding: 40px;
       backdrop-filter: blur(1px);
       clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+    }
+
+    .auth-bg-logo {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: min(112vmin, 1180px);
+      max-width: none;
+      transform: translate(-50%, -50%);
+      opacity: 0.95;
+      filter: brightness(1.9) contrast(1.28);
+      pointer-events: none;
+      z-index: 2;
     }
 
     .auth-logo {
@@ -590,6 +603,7 @@
 
 <!-- AUTH SCREEN -->
 <div id="authScreen" class="discord-auth">
+  <img class="auth-bg-logo" src="jimmas-rp-tools-bg.png" alt="">
   <div class="auth-grid"></div>
   <div class="auth-box">
     <div class="auth-logo">
