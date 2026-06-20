@@ -50,7 +50,7 @@
       position: absolute;
       inset: 0;
       background: 
-        linear-gradient(rgba(0,0,0,0.02), rgba(0,0,0,0.22)),
+        linear-gradient(rgba(0,0,0,0.28), rgba(0,0,0,0.74)),
         radial-gradient(ellipse 60% 50% at 20% 50%, rgba(240,180,41,0.07) 0%, transparent 70%),
         radial-gradient(ellipse 50% 60% at 80% 50%, rgba(224,92,42,0.05) 0%, transparent 70%);
       pointer-events: none;
@@ -72,11 +72,11 @@
       position: relative;
       z-index: 10;
       width: 400px;
-      background: rgba(13,17,23,0.06);
+      background: rgba(13,17,23,0.86);
       border: 1px solid rgba(240,180,41,0.16);
       border-top: 2px solid var(--accent);
       padding: 40px;
-      backdrop-filter: blur(1px);
+      backdrop-filter: blur(6px);
       clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
     }
 
@@ -84,14 +84,14 @@
       position: absolute;
       left: 50%;
       top: 50%;
-      width: min(170vw, 1800px);
+      width: min(125vmin, 1220px);
       max-width: none;
       transform: translate(-50%, -50%);
-      opacity: 1;
-      filter: brightness(2.25) contrast(1.35);
-      mix-blend-mode: screen;
+      opacity: 0.42;
+      filter: brightness(0.9) contrast(1.05);
+      mix-blend-mode: normal;
       pointer-events: none;
-      z-index: 2;
+      z-index: 0;
     }
 
     .auth-logo {
