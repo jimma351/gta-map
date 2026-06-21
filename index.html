@@ -52,7 +52,7 @@
       height: 100%;
       object-fit: cover;
       opacity: 0;
-      filter: brightness(0.58) contrast(1.18) saturate(1.16);
+      filter: brightness(1.22) contrast(1.2) saturate(1.42);
       pointer-events: none;
       z-index: 0;
       animation: videoBgIn 1200ms ease-out forwards;
@@ -63,10 +63,9 @@
       position: absolute;
       inset: 0;
       background: 
-        linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.76)),
-        radial-gradient(ellipse 64% 52% at 50% 46%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.12) 46%, rgba(0,0,0,0.62) 100%),
-        radial-gradient(ellipse 60% 50% at 20% 50%, rgba(240,180,41,0.05) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 60% at 80% 50%, rgba(52,142,255,0.07) 0%, transparent 70%);
+        linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.22)),
+        radial-gradient(ellipse 66% 54% at 50% 44%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.02) 52%, rgba(0,0,0,0.18) 100%),
+        radial-gradient(ellipse 58% 48% at 50% 46%, rgba(37,160,255,0.12) 0%, transparent 72%);
       pointer-events: none;
       z-index: 2;
     }
@@ -103,11 +102,11 @@
       position: relative;
       z-index: 10;
       width: 400px;
-      background: rgba(13,17,23,0.72);
+      background: rgba(8,12,18,0.5);
       border: 1px solid rgba(240,180,41,0.16);
       border-top: 2px solid var(--accent);
       padding: 40px;
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(7px);
       clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
     }
 
@@ -156,7 +155,7 @@
         transform: scale(1.04);
       }
       to {
-        opacity: 0.82;
+        opacity: 1;
         transform: scale(1);
       }
     }
@@ -915,7 +914,7 @@
 
 <!-- AUTH SCREEN -->
 <div id="authScreen" class="discord-auth">
-  <video class="auth-video-bg" autoplay muted playsinline preload="auto" data-loop-tail="3.5">
+  <video class="auth-video-bg" autoplay muted playsinline preload="auto" data-loop-tail="6" data-loop-rate="0.55">
     <source src="kling-background.mp4" type="video/mp4" />
   </video>
   
@@ -1094,11 +1093,16 @@
     if (!video) return;
 
     let loopStart = 0;
+    let isTailLooping = false;
     const setLoopStart = () => {
-      const tailSeconds = Number(video.dataset.loopTail || 3.5);
+      const tailSeconds = Number(video.dataset.loopTail || 6);
       if (Number.isFinite(video.duration) && video.duration > tailSeconds) {
         loopStart = Math.max(video.duration - tailSeconds, 0);
       }
+    };
+    const setTailSpeed = () => {
+      const loopRate = Number(video.dataset.loopRate || 0.55);
+      video.playbackRate = Number.isFinite(loopRate) ? loopRate : 0.55;
     };
 
     video.addEventListener('loadedmetadata', setLoopStart);
@@ -1106,13 +1110,20 @@
     video.addEventListener('timeupdate', () => {
       if (!Number.isFinite(video.duration) || video.duration <= 0) return;
       if (video.currentTime >= video.duration - 0.08) {
+        isTailLooping = true;
+        setTailSpeed();
         video.currentTime = loopStart;
         video.play().catch(() => {});
       }
     });
     video.addEventListener('ended', () => {
+      isTailLooping = true;
+      setTailSpeed();
       video.currentTime = loopStart;
       video.play().catch(() => {});
+    });
+    video.addEventListener('seeked', () => {
+      if (isTailLooping) setTailSpeed();
     });
   }
 
