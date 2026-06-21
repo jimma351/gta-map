@@ -32,9 +32,10 @@
     /* =================== AUTH SCREEN =================== */
     #authScreen {
       display: flex;
-      align-items: center;
-      justify-content: center;
+      align-items: flex-start;
+      justify-content: flex-start;
       height: 100vh;
+      padding: clamp(24px, 5vw, 88px);
       background-color: #010101;
       background-image: none;
       background-position: center;
@@ -102,12 +103,24 @@
       position: relative;
       z-index: 10;
       width: 400px;
+      max-width: min(400px, calc(100vw - 32px));
       background: rgba(8,12,18,0.5);
       border: 1px solid rgba(240,180,41,0.16);
       border-top: 2px solid var(--accent);
       padding: 40px;
       backdrop-filter: blur(7px);
       clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+    }
+
+    @media (max-width: 820px) {
+      #authScreen {
+        justify-content: center;
+        padding: 16px;
+      }
+
+      .auth-box {
+        width: min(400px, 100%);
+      }
     }
 
     .auth-bg-logo {
