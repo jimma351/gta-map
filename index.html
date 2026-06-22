@@ -1658,8 +1658,8 @@
     box.addEventListener('change', refreshVisibility);
   });
 
-  // =================== FRESH START ===================
-  sb.auth.signOut().finally(() => {
+  // =================== SESSION BOOT ===================
+  function showLoggedOutScreen() {
     currentUser = null;
     currentGroup = null;
     markerData = [];
@@ -1667,7 +1667,34 @@
     document.getElementById('mapScreen').style.display = 'none';
     document.getElementById('authScreen').style.display = 'flex';
     document.getElementById('authMsg').textContent = '';
+  }
+
+  let bootingSession = false;
+
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if (event !== 'SIGNED_IN' || !session?.user || bootingSession || currentUser) return;
+    bootingSession = true;
+    try {
+      await initMap(session.user);
+    } finally {
+      bootingSession = false;
+    }
   });
+
+  (async function bootSession() {
+    const { data } = await sb.auth.getSession();
+    if (data?.session?.user) {
+      bootingSession = true;
+      try {
+        await initMap(data.session.user);
+      } finally {
+        bootingSession = false;
+      }
+      return;
+    }
+
+    showLoggedOutScreen();
+  })();
 </script>
 </body>
 </html>
